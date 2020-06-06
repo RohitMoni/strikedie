@@ -1,5 +1,5 @@
 import { Client } from 'boardgame.io/client';
-import { TicTacToe } from './Game';
+import { TicTacToe } from './game';
 
 class TicTacToeClient {
     constructor() {
