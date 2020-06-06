@@ -23,7 +23,8 @@
   "homepage": "https://github.com/RohitMoni/webboardgame#readme",
   "dependencies": {
     "boardgame.io": "^0.39.12",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "phaser": "^3.23.0"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
