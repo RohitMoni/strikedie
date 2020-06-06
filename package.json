@@ -8,7 +8,8 @@
     "dev": "parcel src/client/index.html --open",
     "build": "parcel build src/client/index.html",
     "start": "node src/server/server.js",
-    "prestart": "parcel build src/client/index.html"
+    "prestart": "parcel build src/client/index.html",
+    "heroku-prebuild": "npm install --only=dev"
   },
   "repository": {
     "type": "git",
