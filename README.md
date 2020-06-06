@@ -20,10 +20,8 @@ WIP
 
 ## Deployment
 
-The `staging` branch is set up to auto-deploy on Heroku. You can see the current deployment at https://ara-game.herokuapp.com/.
+The `staging` branch is set up to auto-deploy on Heroku. You can see the current deployment at https://www.moni.dev/.
 
 ## Todo
 
-* Get a custom domain (subdomain) working on heroku
-* Get HTTPS working on heroku
 * Integrate phaser as our view framework
