@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/client/index.html --open",
     "build": "parcel build src/client/index.html",
+    "prestart": "npm run build",
     "start": "node src/server/server.js",
-    "prestart": "parcel build src/client/index.html",
-    "heroku-prebuild": "npm install --only=dev"
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
