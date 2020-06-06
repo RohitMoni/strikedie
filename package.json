@@ -1,0 +1,26 @@
+{
+  "name": "webboardgame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RohitMoni/webboardgame.git"
+  },
+  "author": "A, R, A",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RohitMoni/webboardgame/issues"
+  },
+  "homepage": "https://github.com/RohitMoni/webboardgame#readme",
+  "dependencies": {
+    "boardgame.io": "^0.39.12"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
