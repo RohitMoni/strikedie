@@ -24,6 +24,10 @@ const phaserConfig = {
     height: 600,
     scene: {
         create: create,
+    },
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     }
 };
 
@@ -55,6 +59,7 @@ function create() {
             app.client.moves.clickCell(arrayIndex);
         }
     });
+
 
     redraw();
 }
