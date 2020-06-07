@@ -4,7 +4,7 @@ const Phaser = require('phaser');
 
 class TicTacToeClient {
     constructor() {
-        this.client = Client({ game: TicTacToe });
+        this.client = Client({ game: TicTacToe, debug: true });
         this.client.subscribe(state => OnStateChanged(state));
         this.client.start();
     }
@@ -34,9 +34,9 @@ const phaserConfig = {
 const phaserGame = new Phaser.Game(phaserConfig);
 var phaserGraphics = null;
 var boardConfig = {
-    boardSize: 300,
+    boardSize: 500,
     topLeft: {
-        x: 200,
+        x: 500,
         y: 100,
     },
 }
@@ -126,7 +126,7 @@ function drawMoves(state) {
     function drawO(index) {
         var x = topLeft.x + ((index % 3) * boardSize / 3) + (boardSize / 3 / 2);
         var y = topLeft.y + (Math.floor(index / 3) * boardSize / 3) + (boardSize / 3 / 2);
-        phaserGraphics.strokeCircleShape(new Phaser.Geom.Circle(x, y, 30));
+        phaserGraphics.strokeCircleShape(new Phaser.Geom.Circle(x, y, boardSize / 10));
     }
 
     for (var i = 0; i < 9; ++i) {
