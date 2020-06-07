@@ -37,7 +37,7 @@ var boardConfig = {
     boardSize: 300,
     topLeft: {
         x: 200,
-        y: 100
+        y: 100,
     },
 }
 
@@ -60,6 +60,12 @@ function create() {
         }
     });
 
+    this.scale.on('resize', (gameSize, baseSize, displaySize, resolution, previousWidth, previousHeight) => {
+        boardConfig.topLeft.x = gameSize._width / 2 - boardConfig.boardSize / 2;
+        boardConfig.topLeft.y = gameSize._height / 2 - boardConfig.boardSize / 2;
+
+        redraw();
+    });
 
     redraw();
 }
