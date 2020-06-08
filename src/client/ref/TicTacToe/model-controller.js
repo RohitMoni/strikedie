@@ -1,3 +1,4 @@
+import { Client } from 'boardgame.io/client';
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 function IsVictory(cells) {
@@ -24,7 +25,7 @@ function IsDraw(cells) {
     return cells.filter(c => c === null).length === 0;
 }
 
-export const TicTacToe = {
+const TicTacToe = {
     setup: () => ({ cells: Array(9).fill(null) }),
 
     turn: {
@@ -49,4 +50,10 @@ export const TicTacToe = {
             return { draw: true };
         }
     },
+};
+
+var model = Client({ game: TicTacToe, debug: true });
+
+export {
+    model
 };
