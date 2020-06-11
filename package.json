@@ -9,6 +9,7 @@
     "build": "parcel build src/client/index.html",
     "prestart": "npm run build",
     "start": "node src/server/server.js",
+    "start_game": "parcel src/game/index.html --open",
     "heroku-postbuild": "npm run build"
   },
   "repository": {
