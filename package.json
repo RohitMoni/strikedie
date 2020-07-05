@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel src/client/index.html --open",
     "build": "parcel build src/client/index.html",
+    "build-dev": "SET NODE_ENV=development&& parcel build src/client/index.html --no-minify",
     "prestart": "npm run build",
     "start": "node src/server/server.js",
     "start_game": "parcel src/client/index.html --open",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build-dev"
   },
   "repository": {
     "type": "git",
