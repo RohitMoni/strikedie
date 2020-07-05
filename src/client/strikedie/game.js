@@ -5,7 +5,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-export const TicTacToe = {
+export const StrikeDieGame = {
   setup: () => ({
     timeline: Array(12).fill([]),
     action_phase_turn_order: []

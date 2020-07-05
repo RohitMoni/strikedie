@@ -1,3 +1,11 @@
-import { TicTacToeGame } from './ref/TicTacToe/game'
+import { Client } from 'boardgame.io/client';
+import { StrikeDieGame } from './strikedie/game'
 
-const game = new TicTacToeGame();
+class StrikeDieClient {
+    constructor() {
+        this.client = Client({ game: StrikeDieGame });
+        this.client.start();
+    }
+}
+
+const app = new StrikeDieClient();
