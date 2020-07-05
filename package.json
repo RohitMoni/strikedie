@@ -10,7 +10,8 @@
     "prestart": "npm run build",
     "start": "node src/server/server.js",
     "start_game": "parcel src/client/index.html --open",
-    "heroku-postbuild": "npm run build-dev"
+    "heroku-builddev": "NODE_ENV=development parcel build src/client/index.html --no-minify",
+    "heroku-postbuild": "npm run heroku-builddev"
   },
   "repository": {
     "type": "git",
