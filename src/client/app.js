@@ -3,7 +3,10 @@ import { StrikeDieGame } from './strikedie/game'
 
 class StrikeDieClient {
     constructor() {
-        this.client = Client({ game: StrikeDieGame });
+        this.client = Client({
+          game: StrikeDieGame,
+          numPlayers: 6
+        });
         this.client.start();
     }
 }

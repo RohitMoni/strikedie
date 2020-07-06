@@ -5,11 +5,40 @@
     <title>Strike Die</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.css">
+    <style>
+    .mapContainer {
+      width: 700px;
+      height: 400px;
+      position: relative;
+    }
+    .mapCell {
+      border: 1px inset black;
+      width: 200px;
+      height: 75px;
+      position: absolute;
+    }
+   </style>
 </head>
 
 <body>
     Currently In Development...
+    <div id="app"></div>
     <script src="./app.js"></script>
+    <div class="mapContainer">
+       <div class="mapCell" style="left: 210px; top: 005px"></div>
+
+       <div class="mapCell" style="left: 105px; top: 085px"></div>
+       <div class="mapCell" style="left: 310px; top: 085px"></div>
+
+       <div class="mapCell" style="left: 005px; top: 165px"></div>
+       <div class="mapCell" style="left: 210px; top: 165px"></div>
+       <div class="mapCell" style="left: 415px; top: 165px"></div>
+
+       <div class="mapCell" style="left: 105px; top: 245px"></div>
+       <div class="mapCell" style="left: 310px; top: 245px"></div>
+
+       <div class="mapCell" style="left: 210px; top: 325px"></div>
+    </div>
 </body>
 
 </html>
