@@ -1,13 +1,15 @@
+$theme-colors: (
+    "primary": #222232,
+);
+
+// Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap";
 
-#main {
+.main {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
     height: 100%;
-}
-
-#lobby-control {
-    display: flex;
+    background-color: #100e17;
 }

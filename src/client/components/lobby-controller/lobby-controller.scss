@@ -1,0 +1,17 @@
+.lobby-controller {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #17141d;
+    border-radius: 16px;
+
+    button {
+        min-width: 200px;
+        min-height: 50px;
+        width: 30vw;
+        height: 10vh;
+        margin: 5px;
+    }
+}

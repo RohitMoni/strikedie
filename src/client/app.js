@@ -1,12 +1,12 @@
-import './scss/app.scss';
+import './app.scss';
 import React from "react";
 import ReactDOM from "react-dom";
-import LobbyController from "./components/lobby-controller";
+import LobbyController from "./components/lobby-controller/lobby-controller";
 
 class App extends React.Component {
     render() {
         return (
-            <div id="main">
+            <div class="main">
                 <LobbyController />
             </div>
         );
