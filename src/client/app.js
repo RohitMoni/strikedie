@@ -1,11 +1,15 @@
-import { Client } from 'boardgame.io/client';
-import { StrikeDieGame } from './strikedie/game'
+import './scss/app.scss';
+import React from "react";
+import ReactDOM from "react-dom";
 
-class StrikeDieClient {
-    constructor() {
-        this.client = Client({ game: StrikeDieGame });
-        this.client.start();
+class App extends React.Component {
+    render() {
+        return (
+            <div id="main">Test 1234</div>
+        );
     }
 }
 
-const app = new StrikeDieClient();
+let AppInstance = document.getElementById("app");
+
+ReactDOM.render(<App />, AppInstance);
