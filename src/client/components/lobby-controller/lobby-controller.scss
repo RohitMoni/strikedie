@@ -11,11 +11,34 @@
     width: 35vw;
     height: 25vh;
 
-    button {
+    .main-button {
         min-width: 200px;
         min-height: 50px;
         width: 30vw;
         height: 10vh;
+        margin: 5px;
+    }
+
+    .game-url-container {
+        display: flex;
+        flex-direction: row;
+        
+        .game-url-input {
+            min-width: 200px;
+            min-height: 30px;
+            width: 25vw;
+            height: 5vh;
+            margin: 10px;
+        }
+
+        .game-url-join-button {
+            height: 6vh;
+            margin: 5px;
+        }
+    }
+
+    p {
+        color: #888;
         margin: 5px;
     }
 }
