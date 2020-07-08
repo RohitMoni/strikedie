@@ -4,6 +4,7 @@ $theme-colors: (
 
 // Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap";
+@import "utility";
 
 .main {
     display: flex;
@@ -12,4 +13,11 @@ $theme-colors: (
     padding: 10px;
     height: 100%;
     background-color: #100e17;
+    flex-direction: column;
+
+    h1 {
+        padding: 20px;
+        color: #304f30;
+        @include unselectable;
+    }
 }
