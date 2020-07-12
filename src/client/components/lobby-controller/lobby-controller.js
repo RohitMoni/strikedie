@@ -8,7 +8,7 @@ var lobbyStates = {
 }
 
 var lobbyServerIp = 'http://localhost';
-var lobbyServerPort = 1234;
+var lobbyServerPort = 3000;
 
 class LobbyController extends React.Component {
     static defaultProps = {
@@ -57,14 +57,17 @@ class LobbyController extends React.Component {
     }
 
     requestCreateGame = async () => {
-        const response = await fetch(`${lobbyServerIp}:${lobbyServerPort}/create-room`, {
+        fetch(`${lobbyServerIp}:${lobbyServerPort}/create-room`, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-            },
+        })
+        .then((response) => {
+            console.log("tesT");
+            result = response.json();
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error);
         });
-        const result = await response.json();
-        console.log(result);
     }
 
     onJoinGameClicked = () => {

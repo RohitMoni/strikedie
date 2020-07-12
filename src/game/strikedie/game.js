@@ -6,6 +6,8 @@ function getRandomInt(max) {
 }
 
 export const StrikeDieGame = {
+  name: 'strike-die',
+
   setup: () => ({
     timeline: Array(12).fill([]),
     action_phase_turn_order: []

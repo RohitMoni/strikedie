@@ -3,4 +3,4 @@
 
  const server = Server({ games: [StrikeDieGame] });
 
- game.server.run(8000);
+ server.run(8000);

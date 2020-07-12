@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fetch = require('node-fetch');
 
 const app = express();
 
@@ -15,11 +16,26 @@ app.get('/robots.txt', function (req, res) {
 });
 
 var distPath = path.join(__dirname, '../../dist');
-console.log(distPath);
 app.use(express.static(distPath));
 
-app.post('/create-room', function(req, res) {
-    const response = await fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/create`, {
+// Logging middleware to see what requests we get
+// Note: This is after our static use, so we don't spam our log with static file requests
+app.use((req, res, next) => {
+    requestLogData = {
+        url: req.originalUrl,
+        type: req.method,
+        time: Date.now(),
+        params: req.params,
+    }
+    
+    console.log("------Request received-------");
+    console.log(JSON.stringify(requestLogData));
+    console.log("-------End of Request--------");
+});
+
+app.post('/create-room', async (req, res) => {
+    console.log("Test 1");
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -27,26 +43,26 @@ app.post('/create-room', function(req, res) {
         },
         body: JSON.stringify({
             numPlayers: 6,
-            unlisted: true,
         }),
-    });
-    const result = await response.json();
-    console.log(result);
+    })
+    .then((response) => {
+        console.log("test 2");
+        resule = response.json();
+        console.log(result);
+        // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
+        res.send({ roomCode: result.roomID });
+    })
+    .catch((error) => console.log(error));
+});
 
-    // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-    res.send({roomCode: result.roomID})
-})
-
-app.post('/join-room/:roomcode', function(req, res) {
-    console.log(req.params);
-
+app.post('/join-room/:roomCode', function(req, res) {
     // TODO: make a GET request for the the specific room data (number of players joined already) and use
     // that to set the playerID and playerName for the join request
 
     // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-    let roomID = req.params.roomCode;
+    var roomID = req.params.roomCode;
 
-    const response = await fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/${roomID}/join`, {
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/${roomID}/join`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -56,12 +72,14 @@ app.post('/join-room/:roomcode', function(req, res) {
             playerID: 0,            // TODO: fix this
             playerName: "jane",     // TODO: fix this
         }),
-    });
-    const result = await response.json();
-    console.log(result);
-
-    // TODO: return a response
-})
+    })
+    .then((response) => {
+        result = response.json(); 
+        console.log(result);
+        // TODO: return a response
+    })
+    .catch((error) => console.log(error));
+});
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)

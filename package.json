@@ -9,6 +9,7 @@
     "build-dev": "SET NODE_ENV=development&& parcel build src/client/index.html --no-minify",
     "prestart": "npm run build",
     "start": "node src/server/server.js",
+    "start_bgio": "node -r esm src/server/bgio-server.js",
     "start_game": "parcel src/client/index.html --open",
     "heroku-builddev": "NODE_ENV=development parcel build src/client/index.html --no-minify",
     "heroku-postbuild": "npm run heroku-builddev"
@@ -26,7 +27,9 @@
   "dependencies": {
     "boardgame.io": "^0.39.12",
     "bootstrap": "^4.5.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
     "node-sass": "^4.14.1",
     "phaser": "^3.23.0",
     "react": "^16.13.1",
