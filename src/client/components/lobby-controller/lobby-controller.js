@@ -7,12 +7,17 @@ var lobbyStates = {
     JOINING: 'joining',
 }
 
-var lobbyServerIp = 'http://localhost';
-var lobbyServerPort = 3000;
+const lobbyServerIp = 'http://localhost';
+const lobbyServerPort = 3000;
+
+function getJoinGameUrlFromRoomCode(roomCode) {
+    return `${lobbyServerIp}:${lobbyServerPort}/join/${roomCode}`;
+}
 
 class LobbyController extends React.Component {
     static defaultProps = {
         'currentState': lobbyStates.NONE,
+        'roomCode': null,
     }
 
     constructor(props) {
@@ -66,7 +71,11 @@ class LobbyController extends React.Component {
         .then(response => response.json())
         .then((result) => {
             console.log(result);
-            this.setState({ currentState: lobbyStates.CREATED });
+            this.setState({ 
+                currentState: lobbyStates.CREATED,
+                roomCode: result.roomCode,
+            });
+            console.log(getJoinGameUrlFromRoomCode(this.state.roomCode));
         })
         .catch(console.log);
     }

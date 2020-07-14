@@ -6,9 +6,6 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const lobbyServerIp = "http://localhost";
-const lobbyServerPort = 8000;
-
 // Stop crawlers from seeing our webpage
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
@@ -44,6 +41,11 @@ function HttpResponseCatcher(response) {
 
 // -------------------------------------------- App specific logic
 
+
+const lobbyServerIp = "http://localhost";
+const lobbyServerPort = 8000;
+const gameName = 'strike-die';
+
 var lobbyMapping = {};
 
 function getRandomUnusedString(length, maxRetries=5) {
@@ -63,7 +65,7 @@ function getRandomUnusedString(length, maxRetries=5) {
 }
 
 app.post('/create-room', (req, res) => {
-    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/strike-die/create`, {
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${gameName}/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -87,30 +89,82 @@ app.post('/create-room', (req, res) => {
     });
 });
 
-app.post('/join-room/:roomCode', function(req, res) {
+app.get('/join/:roomCode', function(req, res) {
+
+    const roomCode = req.params.roomCode;
+    const gameID = lobbyMapping[roomCode];
+    var playerNumber;
+    var playerName;
+    var players;
+    
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${gameName}/${gameID}`, {
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+    .then(HttpResponseCatcher)
+    .then((response) => response.json())
+    .then((result) => {
+        console.log(result);
+        players = result['players'];
+        // Todo: Figure out how many players in room
+        numPlayersInRoom = 0;
+
+        playerNumber = numPlayersInRoom + 1;
+        playerName = `Player_${playerNumber}`;
+    })
+    .then(() => {
+        if (playerNumber > players.length) {
+            // No space. Return error, couldn't join the game because full
+        }
+    })
+    .then(() => {
+        return fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${gameName}/${gameID}/join`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                playerID: playerNumber,
+                playerName: playerName,
+            }),
+        })
+    })
+    .then(HttpResponseCatcher)
+    .then((response) => response.json())
+    .then((result) => {
+        console.log(result);
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).send({});
+    });
+
+
+
     // TODO: make a GET request for the the specific room data (number of players joined already) and use
     // that to set the playerID and playerName for the join request
 
     // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-    var roomID = req.params.roomCode;
 
-    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/${roomID}/join`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            playerID: 0,            // TODO: fix this
-            playerName: "jane",     // TODO: fix this
-        }),
-    })
-    .then((response) => {
-        result = response.json(); 
-        console.log(result);
-        // TODO: return a response
-    })
-    .catch((error) => console.log(error));
+    // fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/${roomID}/join`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Accept': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         playerID: 0,            // TODO: fix this
+    //         playerName: "jane",     // TODO: fix this
+    //     }),
+    // })
+    // .then((response) => {
+    //     result = response.json(); 
+    //     console.log(result);
+    //     // TODO: return a response
+    // })
+    // .catch((error) => console.log(error));
 });
 
 app.listen(port, () => {
