@@ -31,11 +31,11 @@ app.use((req, res, next) => {
     console.log("------Request received-------");
     console.log(JSON.stringify(requestLogData));
     console.log("-------End of Request--------");
+    next();
 });
 
-app.post('/create-room', async (req, res) => {
-    console.log("Test 1");
-    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/create`, {
+app.post('/create-room', (req, res) => {
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/strike-die/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,14 +45,13 @@ app.post('/create-room', async (req, res) => {
             numPlayers: 6,
         }),
     })
-    .then((response) => {
-        console.log("test 2");
-        resule = response.json();
+    .then((response) => response.json())
+    .then((result) => {
         console.log(result);
         // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-        res.send({ roomCode: result.roomID });
+        res.send({ roomCode: result.gameID });
     })
-    .catch((error) => console.log(error));
+    .catch(console.log);
 });
 
 app.post('/join-room/:roomCode', function(req, res) {

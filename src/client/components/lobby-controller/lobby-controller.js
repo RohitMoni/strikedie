@@ -53,21 +53,22 @@ class LobbyController extends React.Component {
     }
 
     onCreateGameClicked = () => {
-        this.requestCreateGame().then(this.setState({ currentState: lobbyStates.CREATED }));
+        this.requestCreateGame();
     }
 
-    requestCreateGame = async () => {
+    requestCreateGame = () => {
         fetch(`${lobbyServerIp}:${lobbyServerPort}/create-room`, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+            },
         })
-        .then((response) => {
-            console.log("tesT");
-            result = response.json();
+        .then(response => response.json())
+        .then((result) => {
             console.log(result);
+            this.setState({ currentState: lobbyStates.CREATED });
         })
-        .catch((error) => {
-            console.log(error);
-        });
+        .catch(console.log);
     }
 
     onJoinGameClicked = () => {
