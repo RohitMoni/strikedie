@@ -34,12 +34,32 @@ app.use((req, res, next) => {
     next();
 });
 
-function HttpResponseCatcherMiddleware(response) {
+function HttpResponseCatcher(response) {
     // This middleware catches non-2xx http response codes (like 404s) and makes them errors for handling
     if (!response.ok) {
         throw Error(response.statusText);
     }
-    next();
+    return response;
+}
+
+// -------------------------------------------- App specific logic
+
+var lobbyMapping = {};
+
+function getRandomUnusedString(length, maxRetries=5) {
+    for (var i = 0; i < maxRetries; ++i) {
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var result = '';
+        for (var i = 0; i < length; i++) {
+            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+
+        if (!(result in lobbyMapping)) {
+            return result;
+        }
+    }
+
+    throw Error(`Couldn't generate a new lobby mapping string after ${maxRetries} retries...`);
 }
 
 app.post('/create-room', (req, res) => {
@@ -53,12 +73,13 @@ app.post('/create-room', (req, res) => {
             numPlayers: 6,
         }),
     })
-    .then(HttpResponseCatcherMiddleware)
+    .then(HttpResponseCatcher)
     .then((response) => response.json())
     .then((result) => {
         console.log(result);
-        // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-        res.send({ roomCode: result.gameID });
+        var randomString = getRandomUnusedString(10);
+        lobbyMapping[randomString] = result.gameID;
+        res.send({ roomCode: randomString });
     })
     .catch((err) => {
         console.log(err);
