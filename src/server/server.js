@@ -34,6 +34,14 @@ app.use((req, res, next) => {
     next();
 });
 
+function HttpResponseCatcherMiddleware(response) {
+    // This middleware catches non-2xx http response codes (like 404s) and makes them errors for handling
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    next();
+}
+
 app.post('/create-room', (req, res) => {
     fetch(`${lobbyServerIp}:${lobbyServerPort}/games/strike-die/create`, {
         method: 'POST',
@@ -45,13 +53,17 @@ app.post('/create-room', (req, res) => {
             numPlayers: 6,
         }),
     })
+    .then(HttpResponseCatcherMiddleware)
     .then((response) => response.json())
     .then((result) => {
         console.log(result);
         // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
         res.send({ roomCode: result.gameID });
     })
-    .catch(console.log);
+    .catch((err) => {
+        console.log(err);
+        res.status(500).send({});
+    });
 });
 
 app.post('/join-room/:roomCode', function(req, res) {
