@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
-const { StrikeDieGame } = require('../game/strikedie/game');
 
 const app = express();
 
@@ -36,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.post('/create-room', (req, res) => {
-    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${StrikeDieGame.name}/create`, {
+    fetch(`${lobbyServerIp}:${lobbyServerPort}/games/strike-die/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
