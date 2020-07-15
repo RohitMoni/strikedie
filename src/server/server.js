@@ -89,8 +89,7 @@ app.post('/create-room', (req, res) => {
     });
 });
 
-app.get('/join/:roomCode', function(req, res) {
-
+app.get('/room/:roomCode', function(req, res) {
     const roomCode = req.params.roomCode;
     const gameID = lobbyMapping[roomCode];
     var playerNumber = -1;
@@ -106,7 +105,6 @@ app.get('/join/:roomCode', function(req, res) {
     .then(HttpResponseCatcher)
     .then((response) => response.json())
     .then((result) => {
-        console.log(result);
         players = result['players'];
 
         // Find which player number we are by iterating from 0->n and checking to see which player doesn't already have a name.

@@ -18,6 +18,7 @@ class LobbyController extends React.Component {
     static defaultProps = {
         'currentState': lobbyStates.NONE,
         'roomCode': null,
+        'gameUrl': null,
     }
 
     constructor(props) {
@@ -37,9 +38,17 @@ class LobbyController extends React.Component {
                     </div>
                 )
             case lobbyStates.CREATED:
+                const renderGameCreatedText = () => {
+                    return (
+                        <div>
+                            <p id="gameUrlText">Game URL: {this.state.gameUrl}</p>
+                        </div>
+                    )
+                }
+
                 return (
                     <div className="lobby-controller">
-                        <p>Game Created</p>
+                        {renderGameCreatedText()}
                         <button className="main-button btn btn-primary" onClick={this.onBackClicked}>Back</button>
                     </div>
                 )
@@ -74,8 +83,9 @@ class LobbyController extends React.Component {
             this.setState({ 
                 currentState: lobbyStates.CREATED,
                 roomCode: result.roomCode,
+                gameUrl: getJoinGameUrlFromRoomCode(result.roomCode), 
             });
-            console.log(getJoinGameUrlFromRoomCode(this.state.roomCode));
+            console.log(`Created game: ${getJoinGameUrlFromRoomCode(this.state.roomCode)}`);
         })
         .catch(console.log);
     }
