@@ -93,10 +93,11 @@ app.get('/join/:roomCode', function(req, res) {
 
     const roomCode = req.params.roomCode;
     const gameID = lobbyMapping[roomCode];
-    var playerNumber;
+    var playerNumber = -1;
     var playerName;
     var players;
     
+    // First need to get our room's details, so we can figure out what player number we're joining as / our default name
     fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${gameName}/${gameID}`, {
         headers: {
             'Accept': 'application/json',
@@ -107,18 +108,24 @@ app.get('/join/:roomCode', function(req, res) {
     .then((result) => {
         console.log(result);
         players = result['players'];
-        // Todo: Figure out how many players in room
-        numPlayersInRoom = 0;
 
-        playerNumber = numPlayersInRoom + 1;
-        playerName = `Player_${playerNumber}`;
-    })
-    .then(() => {
-        if (playerNumber > players.length) {
-            // No space. Return error, couldn't join the game because full
+        // Find which player number we are by iterating from 0->n and checking to see which player doesn't already have a name.
+        for (var i = 0; i < players.length; ++i) {
+            if (!('name' in players[i])) {
+                playerNumber = i;
+                playerName = `Player_${playerNumber}`;
+                return;
+            }
         }
     })
     .then(() => {
+        if (playerNumber == -1) {
+            res.status(507).send({error: "Cannot join game, the lobby is full"});
+            throw Error("Cannot join game, the lobby is full");
+        }
+    })
+    .then(() => {
+        // Now we can initiate the join lobby request
         return fetch(`${lobbyServerIp}:${lobbyServerPort}/games/${gameName}/${gameID}/join`, {
             method: 'POST',
             headers: {
@@ -134,37 +141,16 @@ app.get('/join/:roomCode', function(req, res) {
     .then(HttpResponseCatcher)
     .then((response) => response.json())
     .then((result) => {
+        // We should have our player credentials here, can return that to the client for future requests
         console.log(result);
+        res.send(result);
     })
     .catch((err) => {
         console.log(err);
-        res.status(500).send({});
+        if (!res.headersSent) { // Need to do this to allow earlier steps in the chain to return their own codes and errors to the client
+            res.status(500).send({});
+        }
     });
-
-
-
-    // TODO: make a GET request for the the specific room data (number of players joined already) and use
-    // that to set the playerID and playerName for the join request
-
-    // TODO: make the roomCode and roomID be a mapping so that the BGIO roomID is abstracted from client code.
-
-    // fetch(`${lobbyServerIp}:${lobbyServerPort}/games/StrikeDieGame/${roomID}/join`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Accept': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         playerID: 0,            // TODO: fix this
-    //         playerName: "jane",     // TODO: fix this
-    //     }),
-    // })
-    // .then((response) => {
-    //     result = response.json(); 
-    //     console.log(result);
-    //     // TODO: return a response
-    // })
-    // .catch((error) => console.log(error));
 });
 
 app.listen(port, () => {
